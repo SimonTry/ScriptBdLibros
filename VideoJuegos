@@ -1,0 +1,43 @@
+TABLE Empresas{
+  id_empresa UNIQUEIDENTIFIER [primary key, not null]
+  nombreCompleto varchar(100) [not null]
+  pais_origen varchar(100) [not null]
+  ano_fundacion datetime
+}
+
+TABLE VideoJuegos{
+  id_videojuego UNIQUEIDENTIFIER [primary key, not null]
+  Titulo varchar(150) [not null]
+  precio decimal(10,2) [not null]
+  fecha_lanzamiento datetime
+  codigo_unico int [unique, not null]
+  empresaFk UNIQUEIDENTIFIER [not null]
+}
+
+Table Online{
+  id_online uniqueidentifier [primary key, not null]
+  nro_jugadores int [not null]
+  conexion_permanente bool [not null,Note:"Tambien puede ser varchar y guardar si o no"] 
+  videoJuegoFk UNIQUEIDENTIFIER
+}
+
+Table Campaign{
+  id_campana UNIQUEIDENTIFIER [primary key, not null]
+  duracion decimal(10,2)
+  videoJuegoFk UNIQUEIDENTIFIER
+}
+
+Table Torneos{
+  id_torneo UNIQUEIDENTIFIER [primary key,not null]
+  nombre_torneo varchar(100)
+  formato_competencia varchar(100)
+  videoJuegoFk UNIQUEIDENTIFIER [not null]
+}
+
+Ref: "Empresas"."id_empresa" <? "VideoJuegos"."empresaFk"
+
+Ref: "VideoJuegos"."id_videojuego" ?<? "Online"."videoJuegoFk"
+
+Ref: "VideoJuegos"."id_videojuego" ?<? "Campaign"."videoJuegoFk"
+
+Ref: "VideoJuegos"."id_videojuego" <? "Torneos"."videoJuegoFk"
