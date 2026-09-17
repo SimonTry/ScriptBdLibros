@@ -1,43 +1,37 @@
-TABLE Empresas{
-  id_empresa UNIQUEIDENTIFIER [primary key, not null]
-  nombreCompleto varchar(100) [not null]
+Table Empresas{
+  id_empresa int [primary key,not null]
   pais_origen varchar(100) [not null]
-  ano_fundacion datetime
+  ano_fundacion datetime [not null]
+  nombre varchar(100) [not null]
 }
 
-TABLE VideoJuegos{
-  id_videojuego UNIQUEIDENTIFIER [primary key, not null]
-  Titulo varchar(150) [not null]
-  precio decimal(10,2) [not null]
-  fecha_lanzamiento datetime
-  codigo_unico int [unique, not null]
-  empresaFk UNIQUEIDENTIFIER [not null]
-}
-
-Table Online{
-  id_online uniqueidentifier [primary key, not null]
-  nro_jugadores int [not null]
-  conexion_permanente bool [not null,Note:"Tambien puede ser varchar y guardar si o no"] 
-  videoJuegoFk UNIQUEIDENTIFIER
-}
-
-Table Campaign{
-  id_campana UNIQUEIDENTIFIER [primary key, not null]
-  duracion decimal(10,2)
-  videoJuegoFk UNIQUEIDENTIFIER
+Table Video_juegos{
+  id_video_juego int [primary key,not null]
+  nombre varchar(100) [not null]
+  fecha_lanzamiento datetime [not null]
+  plataforma varchar(100) [not null]
+  clasificacion varchar(100) [not null]
+  Categoria varchar(100) [not null, Note:"Accion,Deportivo,Estrategico"]
+  empresaFk uniqueidentifier [not null]
 }
 
 Table Torneos{
-  id_torneo UNIQUEIDENTIFIER [primary key,not null]
-  nombre_torneo varchar(100)
-  formato_competencia varchar(100)
-  videoJuegoFk UNIQUEIDENTIFIER [not null]
+  id_torneo int [primary key,not null]
+  premio varchar(50) [not null]
+  lugar varchar(100) [not null]
+  nombre varchar(100) [not null]
+  fecha_inicio datetime [not null]
+  fecha_finalizacion datetime [not null]
 }
 
-Ref: "Empresas"."id_empresa" <? "VideoJuegos"."empresaFk"
+table DetalleTorneoXVideoJuego{
+  id_detalle uniqueidentifier [primary key, not null]
+  torneoFk uniqueidentifier
+  video_juegoFk uniqueidentifier
+}
 
-Ref: "VideoJuegos"."id_videojuego" ?<? "Online"."videoJuegoFk"
+Ref: "Empresas"."id_empresa" <? "Video_juegos"."empresaFk"
 
-Ref: "VideoJuegos"."id_videojuego" ?<? "Campaign"."videoJuegoFk"
+Ref: "Video_juegos"."id_video_juego" ?<? "DetalleTorneoXVideoJuego"."video_juegoFk"
 
-Ref: "VideoJuegos"."id_videojuego" <? "Torneos"."videoJuegoFk"
+Ref: "Torneos"."id_torneo" ?<? "DetalleTorneoXVideoJuego"."torneoFk"
