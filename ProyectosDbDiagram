@@ -1,0 +1,24 @@
+Table Proyectos{
+  id_proyecto UNIQUEIDENTIFIER [primary key]
+  nombre varchar(100) [not null]
+  fecha_creacion datetime
+  duracion varchar(100)
+}
+
+Table estudiantes{
+  id_estudiante UNIQUEIDENTIFIER [primary key, not null]
+  nombre_completo varchar(100) [not null]
+  fecha_nacimiento datetime [not null]
+  identificacion varchar(200) [unique,not null]
+}
+
+Table Integrantes{
+  id_integrante uniqueidentifier [primary key, not null]
+  estudianteFk uniqueidentifier
+  proyectoFk uniqueidentifier
+  calificacion decimanl(18,0)
+}
+
+Ref: "Proyectos"."id_proyecto" ?<? "Integrantes"."proyectoFk"
+
+Ref: "estudiantes"."id_estudiante" ?<? "Integrantes"."estudianteFk"
